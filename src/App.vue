@@ -1,47 +1,63 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { onMounted, watch } from 'vue'
+import { useGeolocation } from '@/composables/useGeolocation'
+import { useWeather } from '@/composables/useWeather'
+import WeatherBackground from '@/components/WeatherBackground.vue'
+import WeatherDisplay from '@/components/WeatherDisplay.vue'
+
+const { lat, lon, requestLocation } = useGeolocation()
+const {
+  weather,
+  videoName,
+  iconName,
+  conditionES,
+  bgGradient,
+  fetchWeather,
+} = useWeather()
+
+onMounted(() => {
+  requestLocation()
+})
+
+watch([lat, lon], ([newLat, newLon]) => {
+  if (newLat !== null && newLon !== null) {
+    fetchWeather(newLat, newLon)
+  }
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="app-container">
+    <WeatherBackground
+      v-if="videoName"
+      :video-name="videoName"
+      :gradient="bgGradient"
+    />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <main class="app-main">
+      <WeatherDisplay
+        v-if="weather && iconName"
+        :weather="weather"
+        :icon-name="iconName"
+        :condition-es="conditionES"
+      />
+    </main>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.app-container {
+  position: relative;
+  min-height: 100vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.app-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-lg);
 }
 </style>

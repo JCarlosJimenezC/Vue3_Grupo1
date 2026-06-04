@@ -26,6 +26,13 @@ coverage
 
 *.tsbuildinfo
 
+.env
+.env.local
+.env.*.local
+
+# OpenCode skills
+.opencode/
+
 .eslintcache
 
 # Cypress
