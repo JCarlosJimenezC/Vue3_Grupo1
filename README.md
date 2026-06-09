@@ -22,12 +22,34 @@ Aplicación del clima en tiempo real con geolocalización, videos de fondo diná
 - **Íconos climáticos**: imágenes `.webp` dinámicas que cambian según el clima
 - **Diseño glassmorphism responsivo**: tarjetas con `backdrop-filter: blur()` y transparencia sobre el video de fondo
 
+- **#5 - Manejo de errores** 
+La app maneja errores de forma centralizada y los muestra en una tarjeta
+dedicada (`WeatherError.vue`) en lugar de fallar en silencio.
+
+**Errores que maneja:**
+- **Ciudad no encontrada** (HTTP 404) → "Ubicación no encontrada"
+- **API key inválida o no activa** (HTTP 401) → "API key inválida"
+- **Fallo de red u otros** → mensaje devuelto por la API o uno genérico
+
+**Cómo funciona:**
+- `services/weather.js` traduce el código HTTP de la respuesta a un mensaje
+  claro y lanza un `Error`.
+- El composable `useWeather()` captura ese error en un `ref` reactivo (`error`).
+- `App.vue` decide qué renderizar según el estado: error → carga → datos.
+- El componente `WeatherError.vue` muestra el mensaje con un botón
+  **"Reintentar"** que vuelve a solicitar los datos (emite el evento `retry`).
+
+**Cómo probarlo:**
+- *Error de API key:* poner una key inválida en `.env` y reiniciar el server.
+- *Error de red:* desconectar el internet y recargar.
+- *Ciudad inexistente:* (al integrarse con el buscador #1) buscar una ciudad
+  que no exista.
+
 ### 🔜 Pendientes (otros integrantes)
 
 - **#1 — Buscador de ciudad**: campo de texto + botón buscar (o Enter)
 - **#3 — Historial de búsquedas**: últimas 5 ciudades con acceso rápido
 - **#4 — Estado de carga**: indicador visual (spinner o skeleton)
-- **#5 — Manejo de errores**: mensaje si la ciudad no existe o fallo de red
 - **#6 — Persistencia en localStorage**: el historial persiste al recargar la página
 
 ---
@@ -138,7 +160,9 @@ src/
 
 ## Capturas de Pantalla
 
-> *Pendiente de agregar*
+**# Manejo de errores (#5)**
+![Tarjeta de error cuando la API key es inválida](./screenshots/app-error.png)
+> *Pendiente de agregar el resto*
 
 ---
 
