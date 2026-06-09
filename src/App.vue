@@ -1,19 +1,26 @@
 <script setup>
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useGeolocation } from '@/composables/useGeolocation'
 import { useWeather } from '@/composables/useWeather'
 import WeatherBackground from '@/components/WeatherBackground.vue'
 import WeatherDisplay from '@/components/WeatherDisplay.vue'
+import WeatherError from '@/components/WeatherError.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
-const { lat, lon, requestLocation } = useGeolocation()
+const { lat, lon, loading: geoLoading, requestLocation } = useGeolocation()
 const {
   weather,
+  loading: weatherLoading,
+  error,
   videoName,
   iconName,
   conditionES,
   bgGradient,
   fetchWeather,
 } = useWeather()
+
+// Mostramos el spinner mientras se obtiene la ubicación O el clima
+const isLoading = computed(() => geoLoading.value || weatherLoading.value)
 
 onMounted(() => {
   requestLocation()
@@ -24,6 +31,16 @@ watch([lat, lon], ([newLat, newLon]) => {
     fetchWeather(newLat, newLon)
   }
 })
+
+// Reintento: si ya tenemos coordenadas, reintenta el fetch;
+// si no, vuelve a pedir la ubicación.
+function handleRetry() {
+  if (lat.value !== null && lon.value !== null) {
+    fetchWeather(lat.value, lon.value)
+  } else {
+    requestLocation()
+  }
+}
 </script>
 
 <template>
@@ -35,8 +52,19 @@ watch([lat, lon], ([newLat, newLon]) => {
     />
 
     <main class="app-main">
+      <!-- #5: Manejo de errores -->
+      <WeatherError
+        v-if="error"
+        :message="error"
+        @retry="handleRetry"
+      />
+
+      <!-- #4: Estado de carga (versión mínima) -->
+      <LoadingSpinner v-else-if="isLoading" />
+
+      <!-- #2: Datos del clima -->
       <WeatherDisplay
-        v-if="weather && iconName"
+        v-else-if="weather && iconName"
         :weather="weather"
         :icon-name="iconName"
         :condition-es="conditionES"
