@@ -1,5 +1,5 @@
 import { ref, computed, readonly } from 'vue'
-import { fetchWeatherByCoords } from '@/services/weather'
+import { fetchWeatherByCoords, fetchWeatherByCity  } from '@/services/weather'
 import { getVideoName, getIconName, getWeatherConditionES, getBgGradient } from '@/utils/weatherMappings'
 
 export function useWeather() {
@@ -32,6 +32,7 @@ export function useWeather() {
     return weather.value.weather[0].icon.endsWith('n')
   })
 
+  
   async function fetchWeather(lat, lon) {
     loading.value = true
     error.value = null
@@ -39,6 +40,20 @@ export function useWeather() {
 
     try {
       weather.value = await fetchWeatherByCoords(lat, lon)
+    } catch (err) {
+      error.value = err.message
+    } finally {
+      loading.value = false
+    }
+  }
+
+  //Funcion para buscar por ciudad
+   async function fetchWeatherCity(city) {
+    loading.value = true
+    error.value = null
+    weather.value = null
+    try {
+      weather.value = await fetchWeatherByCity(city)
     } catch (err) {
       error.value = err.message
     } finally {
@@ -56,5 +71,6 @@ export function useWeather() {
     bgGradient,
     isNight,
     fetchWeather,
+    fetchWeatherCity,
   }
 }

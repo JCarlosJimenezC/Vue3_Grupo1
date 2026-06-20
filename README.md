@@ -162,6 +162,9 @@ src/
 
 **# Manejo de errores (#5)**
 ![Tarjeta de error cuando la API key es inválida](./screenshots/app-error.png)
+
+**# Buscador de ciudad (#1)**
+![Boton y campo de texto para buscar una ciudad](./screenshots/app-buscar.png)
 > *Pendiente de agregar el resto*
 
 ---

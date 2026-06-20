@@ -6,6 +6,7 @@ import WeatherBackground from '@/components/WeatherBackground.vue'
 import WeatherDisplay from '@/components/WeatherDisplay.vue'
 import WeatherError from '@/components/WeatherError.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import CitySearch from '@/components/CitySearch.vue'
 
 const { lat, lon, loading: geoLoading, requestLocation } = useGeolocation()
 const {
@@ -17,6 +18,7 @@ const {
   conditionES,
   bgGradient,
   fetchWeather,
+  fetchWeatherCity,
 } = useWeather()
 
 // Mostramos el spinner mientras se obtiene la ubicación O el clima
@@ -41,6 +43,10 @@ function handleRetry() {
     requestLocation()
   }
 }
+
+function handleCitySearch(city) {
+  fetchWeatherCity(city)
+}
 </script>
 
 <template>
@@ -52,6 +58,9 @@ function handleRetry() {
     />
 
     <main class="app-main">
+    <div class="app-content">
+    <CitySearch @search="handleCitySearch" />
+
       <!-- #5: Manejo de errores -->
       <WeatherError
         v-if="error"
@@ -69,6 +78,7 @@ function handleRetry() {
         :icon-name="iconName"
         :condition-es="conditionES"
       />
+      </div>
     </main>
   </div>
 </template>
@@ -77,6 +87,13 @@ function handleRetry() {
 .app-container {
   position: relative;
   min-height: 100vh;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .app-main {
