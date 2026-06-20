@@ -1,12 +1,14 @@
 <script setup>
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useGeolocation } from '@/composables/useGeolocation'
 import { useWeather } from '@/composables/useWeather'
+import { useSearchHistory } from '@/composables/useSearchHistory'
 import WeatherBackground from '@/components/WeatherBackground.vue'
 import WeatherDisplay from '@/components/WeatherDisplay.vue'
 import WeatherError from '@/components/WeatherError.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import CitySearch from '@/components/CitySearch.vue'
+import SearchHistory from '@/components/SearchHistory.vue'
 
 const { lat, lon, loading: geoLoading, requestLocation } = useGeolocation()
 const {
@@ -21,7 +23,9 @@ const {
   fetchWeatherCity,
 } = useWeather()
 
-// Mostramos el spinner mientras se obtiene la ubicación O el clima
+const { history, addToHistory } = useSearchHistory()
+const citySearchRef = ref(null)
+
 const isLoading = computed(() => geoLoading.value || weatherLoading.value)
 
 onMounted(() => {
@@ -34,8 +38,17 @@ watch([lat, lon], ([newLat, newLon]) => {
   }
 })
 
-// Reintento: si ya tenemos coordenadas, reintenta el fetch;
-// si no, vuelve a pedir la ubicación.
+// Cada vez que llegan datos nuevos, guardamos la ciudad en el historial
+watch(weather, (newWeather) => {
+  if (newWeather) {
+    addToHistory({
+      label: `${newWeather.name}, ${newWeather.sys.country}`,
+      lat: newWeather.coord.lat,
+      lon: newWeather.coord.lon,
+    })
+  }
+})
+
 function handleRetry() {
   if (lat.value !== null && lon.value !== null) {
     fetchWeather(lat.value, lon.value)
@@ -51,6 +64,11 @@ function handleCitySearch(payload) {
     fetchWeatherCity(payload)
   }
 }
+
+function handleHistorySelect(payload) {
+  citySearchRef.value?.clear()
+  handleCitySearch(payload)
+}
 </script>
 
 <template>
@@ -63,7 +81,8 @@ function handleCitySearch(payload) {
 
     <main class="app-main">
     <div class="app-content">
-    <CitySearch @search="handleCitySearch" />
+    <CitySearch ref="citySearchRef" @search="handleCitySearch" />
+    <SearchHistory :history="history" @select="handleHistorySelect" />
 
       <!-- #5: Manejo de errores -->
       <WeatherError

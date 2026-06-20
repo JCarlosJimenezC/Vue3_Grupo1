@@ -4,6 +4,8 @@ import { fetchCitySuggestions } from '@/services/weather'
 
 const emit = defineEmits(['search'])
 const city = ref('')
+
+defineExpose({ clear: () => { city.value = '' } })
 const suggestions = ref([])
 const showSuggestions = ref(false)
 let debounceTimer = null
@@ -29,14 +31,15 @@ function formatSuggestion(item) {
 }
 
 function selectSuggestion(item) {
-  city.value = formatSuggestion(item)
   showSuggestions.value = false
   emit('search', { lat: item.lat, lon: item.lon })
+  city.value = ''
 }
 
 function handleSearch() {
   const trimmed = city.value.trim()
   if (!trimmed) return
+  city.value = ''
   showSuggestions.value = false
   emit('search', trimmed)
 }
