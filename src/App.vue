@@ -44,8 +44,12 @@ function handleRetry() {
   }
 }
 
-function handleCitySearch(city) {
-  fetchWeatherCity(city)
+function handleCitySearch(payload) {
+  if (typeof payload === 'object' && payload !== null) {
+    fetchWeather(payload.lat, payload.lon)
+  } else {
+    fetchWeatherCity(payload)
+  }
 }
 </script>
 

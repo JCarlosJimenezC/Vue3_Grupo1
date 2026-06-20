@@ -32,3 +32,22 @@ export async function fetchWeatherByCoords(lat, lon) {
 export async function fetchWeatherByCity(city) {
   return fetchWeather({ q: city })
 }
+
+
+const GEO_URL = 'https://api.openweathermap.org/geo/1.0/direct'
+
+export async function fetchCitySuggestions(query) {
+  if (!query || query.trim().length < 2) return []
+  const params = new URLSearchParams({
+    q: query.trim(),
+    limit: 5,
+    appid: API_KEY,
+  })
+  try {
+    const response = await fetch(`${GEO_URL}?${params}`)
+    if (!response.ok) return []
+    return response.json()
+  } catch {
+    return []
+  }
+}
