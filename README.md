@@ -1,6 +1,14 @@
-# ClimaVue — App del Clima con Vue 3
+# ClimaVue — App del Clima con Vue 3 | Grupo G1
 
-Aplicación del clima en tiempo real con geolocalización, videos de fondo dinámicos y diseño glassmorphism. Construida con **Vue 3** + **Vite** como parte de la investigación de Frameworks para la Universidad de Costa Rica.
+Aplicación del clima en tiempo real con geolocalización, búsqueda de ciudades, historial persistente, videos de fondo dinámicos y diseño glassmorphism. Construida con **Vue 3** + **Vite** como parte de la investigación de Frameworks para la Universidad de Costa Rica.
+
+---
+
+## Demo
+
+> URL de la demo: *pendiente de publicar en Vercel*
+
+Al cargar, la app solicita permiso de ubicación y muestra automáticamente el clima de tu ciudad actual. Si se deniega el permiso, muestra San José, Costa Rica como ciudad por defecto.
 
 ---
 
@@ -14,67 +22,47 @@ Aplicación del clima en tiempo real con geolocalización, videos de fondo diná
 
 ## Características Implementadas
 
-### ✅ Completadas
+Todas las 6 funcionalidades requeridas están completas:
 
-- **#2 — Mostrar datos del clima actual**: temperatura, descripción, humedad, velocidad del viento e ícono del clima
-- **Geolocalización automática**: solicita permiso de ubicación al navegador al cargar la página, con fallback a San José, Costa Rica
-- **Video de fondo dinámico**: reproduce un video distinto según la condición climática (día/noche)
-- **Íconos climáticos**: imágenes `.webp` dinámicas que cambian según el clima
-- **Diseño glassmorphism responsivo**: tarjetas con `backdrop-filter: blur()` y transparencia sobre el video de fondo
+| # | Funcionalidad | Estado |
+|---|---|---|
+| 1 | Buscador de ciudad con campo de texto, botón y búsqueda al presionar Enter | ✅ |
+| 2 | Datos del clima actual: temperatura, descripción, humedad, viento, presión y visibilidad | ✅ |
+| 3 | Historial de las últimas 5 ciudades buscadas con acceso rápido al hacer clic | ✅ |
+| 4 | Estado de carga: spinner animado mientras se obtienen los datos | ✅ |
+| 5 | Manejo de errores: mensaje claro si la ciudad no existe o hay fallo de red | ✅ |
+| 6 | Persistencia del historial en `localStorage` al recargar la página | ✅ |
 
-- **#5 - Manejo de errores** 
-La app maneja errores de forma centralizada y los muestra en una tarjeta
-dedicada (`WeatherError.vue`) en lugar de fallar en silencio.
+### Funcionalidades adicionales
 
-**Errores que maneja:**
-- **Ciudad no encontrada** (HTTP 404) → "Ubicación no encontrada"
-- **API key inválida o no activa** (HTTP 401) → "API key inválida"
-- **Fallo de red u otros** → mensaje devuelto por la API o uno genérico
-
-**Cómo funciona:**
-- `services/weather.js` traduce el código HTTP de la respuesta a un mensaje
-  claro y lanza un `Error`.
-- El composable `useWeather()` captura ese error en un `ref` reactivo (`error`).
-- `App.vue` decide qué renderizar según el estado: error → carga → datos.
-- El componente `WeatherError.vue` muestra el mensaje con un botón
-  **"Reintentar"** que vuelve a solicitar los datos (emite el evento `retry`).
-
-**Cómo probarlo:**
-- *Error de API key:* poner una key inválida en `.env` y reiniciar el server.
-- *Error de red:* desconectar el internet y recargar.
-- *Ciudad inexistente:* (al integrarse con el buscador #1) buscar una ciudad
-  que no exista.
-
-### 🔜 Pendientes (otros integrantes)
-
-- **#1 — Buscador de ciudad**: campo de texto + botón buscar (o Enter)
-- **#3 — Historial de búsquedas**: últimas 5 ciudades con acceso rápido
-- **#4 — Estado de carga**: indicador visual (spinner o skeleton)
-- **#6 — Persistencia en localStorage**: el historial persiste al recargar la página
+- **Geolocalización automática** con fallback a San José, Costa Rica
+- **Autocomplete de ciudades** al escribir en el buscador (API de Geocoding de OpenWeatherMap)
+- **Video de fondo dinámico** según condición climática y hora del día (11 videos `.webm`)
+- **Íconos climáticos** dinámicos en formato `.webp`
+- **Diseño glassmorphism responsivo** con `backdrop-filter: blur()` sobre el video de fondo
 
 ---
 
-## Conceptos Clave de Vue 3
+## Restricciones Técnicas Cumplidas
 
-- **Composition API** con `<script setup>` en todos los componentes
-- **Composables**: `useGeolocation()` y `useWeather()` para lógica reutilizable con `ref`, `computed` y `watch`
-- **Prop drilling** con `defineProps` y comunicación con `defineEmits`
-- **Import dinámico de assets** con `new URL(..., import.meta.url).href` para cargar videos e imágenes según la condición climática
-- **Variables de entorno con Vite** usando `import.meta.env.VITE_OPENWEATHER_API_KEY`
-- **CSS dinámico** con `:style` binding para cambiar el gradiente del overlay según el clima
-- **Vue reactive** para actualizar la vista automáticamente cuando cambian los datos
+- Sin librerías de componentes UI externas
+- Diseño responsivo: funciona en escritorio y móvil (breakpoints en 768px y 480px)
+- API Key en variables de entorno, no expuesta en el repositorio
 
 ---
 
-## Configuración de API Key
+## Configuración de la API Key
 
-1. Crear archivo `.env` en la raíz del proyecto (basado en `.env.example`)
-2. Agregar la API key:
-   ```
-   VITE_OPENWEATHER_API_KEY=tu_api_key_aqui
-   ```
-3. Obtener una API key gratuita en [OpenWeatherMap](https://openweathermap.org/api)
-4. **No compartir la API key** — `.env` está en `.gitignore`
+1. Obtener una API Key gratuita en [OpenWeatherMap](https://openweathermap.org/api)
+2. Crear el archivo `.env` en la raíz del proyecto (basado en `.env.example`):
+
+```
+VITE_OPENWEATHER_API_KEY=tu_api_key_aqui
+VITE_OPENWEATHER_BASE_URL=https://api.openweathermap.org/data/2.5/weather
+VITE_OPENWEATHER_GEO_URL=https://api.openweathermap.org/geo/1.0/direct
+```
+
+3. El archivo `.env` está en `.gitignore` — nunca se sube al repositorio.
 
 ---
 
@@ -87,15 +75,16 @@ dedicada (`WeatherError.vue`) en lugar de fallar en silencio.
 ### Instalación
 
 ```sh
-pnpm install
+npm install
 ```
-Para evitar inyección de scripts maliciosos 
 
 ### Desarrollo (con Hot-Reload)
 
 ```sh
 npm run dev
 ```
+
+Abrir en el navegador: `http://localhost:5173`
 
 ### Producción
 
@@ -106,37 +95,27 @@ npm run preview
 
 ---
 
-## Estructura del Proyecto
+## Conceptos Clave de Vue 3 Utilizados
 
-```
-src/
-├── App.vue                         # Layout raíz: fondo + tarjeta del clima
-├── main.js                         # Entry point de Vue
-├── assets/
-│   ├── base.css                    # Variables CSS con design tokens
-│   ├── main.css                    # Estilos base
-│   ├── videos/                     # 11 videos .webm de fondo climático
-│   ├── Despejado_Dia.webp          # Íconos climáticos .webp
-│   └── ...                         # (10 imágenes en total)
-├── components/
-│   ├── WeatherBackground.vue       # Video fullscreen con overlay
-│   ├── WeatherDisplay.vue          # Dashboard principal con temperatura y detalles
-│   └── WeatherIcon.vue             # Ícono climático dinámico
-├── composables/
-│   ├── useGeolocation.js           # Lógica de geolocalización
-│   └── useWeather.js               # Estado del clima + mapeo de assets
-├── services/
-│   └── weather.js                  # Fetch a OpenWeatherMap API
-└── utils/
-    └── weatherMappings.js          # Mapeo de códigos OWM → assets locales
-```
+| Concepto | Dónde se usa |
+|---|---|
+| `<script setup>` | Todos los componentes |
+| `ref` y `computed` | `useWeather.js`, `useGeolocation.js`, `useSearchHistory.js` |
+| `watch` | `App.vue` (coordenadas, clima), `CitySearch.vue` (debounce) |
+| `defineProps` / `defineEmits` | `WeatherDisplay`, `WeatherError`, `SearchHistory`, `CitySearch` |
+| `defineExpose` | `CitySearch.vue` (expone `clear()` al padre) |
+| `onMounted` | `App.vue` (inicia geolocalización) |
+| Composables | `useGeolocation`, `useWeather`, `useSearchHistory` |
+| Template refs | `App.vue` (`ref="citySearchRef"`) |
+| `import.meta.env` | `weather.js` (variables de entorno Vite) |
+| `new URL(..., import.meta.url)` | `WeatherBackground.vue` (carga dinámica de assets) |
 
 ---
 
 ## Pros y Contras de Vue 3
 
 ### Pros
-- **Composition API** permite extraer lógica en funciones reutilizables (composables)
+- **Composition API** permite extraer lógica en composables reutilizables
 - `<script setup>` reduce boilerplate comparado con Options API
 - Reactividad fina con `ref` y `computed` sin dependencias externas
 - Ecosistema ligero — sin necesidad de librerías UI externas para este proyecto
@@ -152,20 +131,44 @@ src/
 
 ---
 
-## Demo
+## Estructura del Proyecto
 
-> URL de la demo: *pendiente de publicar en Vercel o Netlify*
+```
+src/
+├── App.vue                         # Orquestador principal: geolocalización, clima, historial
+├── main.js                         # Entry point de Vue
+├── assets/
+│   ├── base.css                    # Variables CSS (design tokens)
+│   ├── main.css                    # Estilos base
+│   ├── videos/                     # 11 videos .webm de fondo climático
+│   └── *.webp                      # 10 íconos climáticos
+├── components/
+│   ├── WeatherBackground.vue       # Video fullscreen con overlay de gradiente
+│   ├── WeatherDisplay.vue          # Dashboard principal: temperatura y detalles
+│   ├── WeatherIcon.vue             # Ícono climático dinámico
+│   ├── WeatherError.vue            # Tarjeta de error con botón "Reintentar"
+│   ├── LoadingSpinner.vue          # Spinner animado de carga
+│   ├── CitySearch.vue              # Buscador con autocomplete y debounce
+│   └── SearchHistory.vue          # Chips de historial de ciudades recientes
+├── composables/
+│   ├── useGeolocation.js           # Lógica de geolocalización del navegador
+│   ├── useWeather.js               # Estado del clima + mapeo de assets
+│   └── useSearchHistory.js        # Historial persistente en localStorage
+├── services/
+│   └── weather.js                  # Fetch a OpenWeatherMap API
+└── utils/
+    └── weatherMappings.js          # Mapeo de códigos OWM → assets locales
+```
 
 ---
 
 ## Capturas de Pantalla
 
-**# Manejo de errores (#5)**
-![Tarjeta de error cuando la API key es inválida](./screenshots/app-error.png)
+**Buscador de ciudad (#1)**
+![Campo de texto y botón para buscar una ciudad](./screenshots/app-buscar.png)
 
-**# Buscador de ciudad (#1)**
-![Boton y campo de texto para buscar una ciudad](./screenshots/app-buscar.png)
-> *Pendiente de agregar el resto*
+**Manejo de errores (#5)**
+![Tarjeta de error cuando la API key es inválida](./screenshots/app-error.png)
 
 ---
 

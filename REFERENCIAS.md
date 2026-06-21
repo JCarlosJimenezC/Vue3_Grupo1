@@ -56,3 +56,56 @@ https://drive.google.com/file/d/16eTS1-KKFf1Fuwx3xbWqEeTOOVnV32KC/view
 
 Pixabay. (2026). *Tormenta_Electrica* [Video]. Pixabay.
 https://drive.google.com/file/d/1MiXgpTbgLRCvINZFNcoZv4dQz0uTyC-j/view
+
+---
+
+## Documentación Oficial — Vue 3 (framework)
+
+Vue.js. (s.f.). *Composables*. Vue.js Guide. Recuperado el 21 de junio de 2026, de https://vuejs.org/guide/reusability/composables
+*Usado en:* `useGeolocation.js`, `useWeather.js`, `useSearchHistory.js` (patrón composable).
+
+Vue.js. (s.f.). *`<script setup>`*. Vue.js API Reference. Recuperado el 21 de junio de 2026, de https://vuejs.org/api/sfc-script-setup.html
+*Usado en:* `CitySearch.vue` (`defineEmits`, `defineExpose`) y `WeatherDisplay.vue` / `SearchHistory.vue` (`defineProps`, `defineEmits`).
+
+Vue.js. (s.f.). *Watchers*. Vue.js Guide. Recuperado el 21 de junio de 2026, de https://vuejs.org/guide/essentials/watchers
+*Usado en:* `App.vue` y `useWeather.js` (función `watch`).
+
+Vue.js. (s.f.). *Reactivity API: Core*. Vue.js API Reference. Recuperado el 21 de junio de 2026, de https://vuejs.org/api/reactivity-core
+*Usado en:* todos los componentes/composables con `computed` y `watch`.
+
+## Documentación Oficial — Vite
+
+Vite. (s.f.). *Static Asset Handling*. Vite Guide. Recuperado el 21 de junio de 2026, de https://vite.dev/guide/assets
+*Usado en:* `WeatherBackground.vue` (carga dinámica de assets con `new URL(..., import.meta.url)`).
+
+## Documentación Oficial — OpenWeatherMap
+
+OpenWeather. (s.f.). *Current weather data*. OpenWeatherMap API. Recuperado el 21 de junio de 2026, de https://openweathermap.org/api/current
+*Usado en:* `weather.js` (endpoint `/data/2.5/weather`).
+
+OpenWeather. (s.f.). *Geocoding API*. OpenWeatherMap API. Recuperado el 21 de junio de 2026, de https://openweathermap.org/api/geocoding-api
+*Usado en:* `weather.js` (endpoint `/geo/1.0/direct`, autocomplete de `CitySearch.vue`).
+
+## Documentación Oficial — APIs del navegador (MDN)
+
+Mozilla. (s.f.). *Window: localStorage property*. MDN Web Docs. Recuperado el 21 de junio de 2026, de https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+*Usado en:* `useSearchHistory.js` (persistencia del historial).
+
+Mozilla. (s.f.). *Using the Fetch API*. MDN Web Docs. Recuperado el 21 de junio de 2026, de https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+*Usado en:* `weather.js` (peticiones HTTP a OpenWeatherMap).
+
+Mozilla. (s.f.). *URLSearchParams*. MDN Web Docs. Recuperado el 21 de junio de 2026, de https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+*Usado en:* `weather.js` (construcción de query strings).
+
+## Artículos Complementarios
+
+LogRocket. (2024, 4 de junio). *How to implement glassmorphism with CSS*. LogRocket Blog. https://blog.logrocket.com/implement-glassmorphism-css/
+*Complementa:* `WeatherDisplay.vue` (efecto glass con `backdrop-filter` + `rgba`).
+
+freeCodeCamp. (2025, 13 de junio). *How Vue Composables Work – Explained with Code Examples*. freeCodeCamp News. https://www.freecodecamp.org/news/how-vue-composables-work/
+*Complementa:* el patrón de composables usado en `useGeolocation.js`, `useWeather.js` y `useSearchHistory.js`.
+
+## Video
+
+The Net Ninja. (2020, 16 de diciembre). *Vue JS 3 Tutorial for Beginners #11 - The Composition API (part 2)* [Video]. YouTube. https://www.youtube.com/watch?v=0FwBjPeLqQ8
+*Complementa:* uso de `props`, `fetch` y composables dentro de la Composition API (cubre exactamente el patrón que usan `useWeather.js` y `CitySearch.vue`).
