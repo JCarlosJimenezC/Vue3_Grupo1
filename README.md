@@ -6,7 +6,7 @@ Aplicación del clima en tiempo real con geolocalización, búsqueda de ciudades
 
 ## Demo
 
-> URL de la demo: *pendiente de publicar en Vercel*
+> URL de la demo: [Demo](https://vue3-grupo1.vercel.app/)
 
 Al cargar, la app solicita permiso de ubicación y muestra automáticamente el clima de tu ciudad actual. Si se deniega el permiso, muestra San José, Costa Rica como ciudad por defecto.
 
