@@ -4,8 +4,10 @@ const STORAGE_KEY = 'climavue_history'
 const MAX_ENTRIES = 5
 
 export function useSearchHistory() {
+  // Inicializa el historial desde localStorage al cargar el composable
   const history = ref(loadHistory())
 
+  // Lee y parsea el historial guardado en localStorage
   function loadHistory() {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []
@@ -14,6 +16,7 @@ export function useSearchHistory() {
     }
   }
 
+  // Agrega una entrada al historial: evita duplicados, mantiene máximo 5, persiste en localStorage
   function addToHistory(entry) {
     const filtered = history.value.filter(h => h.label !== entry.label)
     history.value = [entry, ...filtered].slice(0, MAX_ENTRIES)
