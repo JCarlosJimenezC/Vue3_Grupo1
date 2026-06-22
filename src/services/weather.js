@@ -1,9 +1,23 @@
-// Variables de entorno expuestas por Vite a través de import.meta.env
 const BASE_URL = import.meta.env.VITE_OPENWEATHER_BASE_URL
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 
+if (!BASE_URL || !API_KEY) {
+  console.error(
+    '%c❌ ClimaVue: Configuraci\u00f3n incompleta.\n' +
+    'Crea el archivo .env a partir de .env.example y agrega tu API key de OpenWeatherMap.\n' +
+    '  cp .env.example .env',
+    'color: #ff6b6b; font-weight: bold; font-size: 14px;'
+  )
+}
+
 // Petición genérica al API de OpenWeatherMap usando URLSearchParams para la query string
 async function fetchWeather(params) {
+  if (!BASE_URL || !API_KEY) {
+    throw new Error(
+      'Configuraci\u00f3n incompleta: crea el archivo .env con tu API key de OpenWeatherMap.'
+    )
+  }
+
   const query = new URLSearchParams({
     appid: API_KEY,
     units: 'metric',
@@ -25,7 +39,15 @@ async function fetchWeather(params) {
     throw new Error(errorData.message || 'Error al obtener datos del clima')
   }
 
-  return response.json()
+  const text = await response.text()
+  try {
+    return JSON.parse(text)
+  } catch {
+    throw new Error(
+      'La API del clima no est\u00e1 disponible. ' +
+      'Verifica que el archivo .env exista y tenga una API key v\u00e1lida de OpenWeatherMap.'
+    )
+  }
 }
 
 export async function fetchWeatherByCoords(lat, lon) {
@@ -50,7 +72,12 @@ export async function fetchCitySuggestions(query) {
   try {
     const response = await fetch(`${GEO_URL}?${params}`)
     if (!response.ok) return []
-    return response.json()
+    const text = await response.text()
+    try {
+      return JSON.parse(text)
+    } catch {
+      return []
+    }
   } catch {
     return []
   }

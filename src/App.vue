@@ -6,7 +6,7 @@ import { useSearchHistory } from '@/composables/useSearchHistory'
 import WeatherBackground from '@/components/WeatherBackground.vue'
 import WeatherDisplay from '@/components/WeatherDisplay.vue'
 import WeatherError from '@/components/WeatherError.vue'
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import WeatherSkeleton from '@/components/WeatherSkeleton.vue'
 import CitySearch from '@/components/CitySearch.vue'
 import SearchHistory from '@/components/SearchHistory.vue'
 
@@ -80,7 +80,7 @@ function handleHistorySelect(payload) {
     />
 
     <main class="app-main">
-    <div class="app-content">
+    <div class="app-content" :class="{ 'content--loading': isLoading }">
     <CitySearch ref="citySearchRef" @search="handleCitySearch" />
     <SearchHistory :history="history" @select="handleHistorySelect" />
 
@@ -91,8 +91,8 @@ function handleHistorySelect(payload) {
         @retry="handleRetry"
       />
 
-      <!-- #4: Estado de carga (versión mínima) -->
-      <LoadingSpinner v-else-if="isLoading" />
+      <!-- #4: Estado de carga (skeleton) -->
+      <WeatherSkeleton v-else-if="isLoading" />
 
       <!-- #2: Datos del clima -->
       <WeatherDisplay
@@ -127,5 +127,11 @@ function handleHistorySelect(payload) {
   justify-content: center;
   min-height: 100vh;
   padding: var(--space-lg);
+}
+
+.content--loading {
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 </style>

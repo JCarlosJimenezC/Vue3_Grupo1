@@ -1,4 +1,4 @@
-import { ref, computed, readonly } from 'vue'
+import { ref, computed } from 'vue'
 import { fetchWeatherByCoords, fetchWeatherByCity  } from '@/services/weather'
 import { getVideoName, getIconName, getWeatherConditionES, getBgGradient } from '@/utils/weatherMappings'
 
