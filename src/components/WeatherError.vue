@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+// defineProps: recibe el mensaje de error desde el padre con valor por defecto
 defineProps({
   message: {
     type: String,
@@ -21,6 +22,7 @@ defineProps({
   },
 })
 
+// defineEmits: evento 'retry' que el padre escucha para reintentar la carga
 defineEmits(['retry'])
 </script>
 

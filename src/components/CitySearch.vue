@@ -2,14 +2,17 @@
 import { ref, watch } from 'vue'
 import { fetchCitySuggestions } from '@/services/weather'
 
+// defineEmits: evento personalizado que el padre escucha para lanzar la búsqueda
 const emit = defineEmits(['search'])
 const city = ref('')
 
+// defineExpose: expone el método clear() al componente padre via ref
 defineExpose({ clear: () => { city.value = '' } })
 const suggestions = ref([])
 const showSuggestions = ref(false)
 let debounceTimer = null
 
+// watch con debounce de 350ms para autocomplete mientras el usuario escribe
 watch(city, (newValue) => {
   clearTimeout(debounceTimer)
   if (newValue.trim().length < 2) {
@@ -32,6 +35,7 @@ function formatSuggestion(item) {
 
 function selectSuggestion(item) {
   showSuggestions.value = false
+  // Emite coordenadas al padre para evitar una segunda llamada de geocoding
   emit('search', { lat: item.lat, lon: item.lon })
   city.value = ''
 }

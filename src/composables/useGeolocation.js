@@ -1,8 +1,10 @@
 import { ref, readonly } from 'vue'
 
+// Coordenadas por defecto: San José, Costa Rica (fallback si se deniega la geolocalización)
 const SAN_JOSE = { lat: 9.9281, lon: -84.0907 }
 
 export function useGeolocation() {
+  // Estado reactivo para las coordenadas y el estado de carga
   const lat = ref(null)
   const lon = ref(null)
   const loading = ref(true)
@@ -12,6 +14,7 @@ export function useGeolocation() {
     loading.value = true
     error.value = null
 
+    // Si el navegador no soporta Geolocation API, usar fallback inmediato
     if (!navigator.geolocation) {
       error.value = 'Geolocalización no soportada'
       lat.value = SAN_JOSE.lat

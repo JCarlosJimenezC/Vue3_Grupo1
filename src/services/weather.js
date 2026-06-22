@@ -1,6 +1,8 @@
+// Variables de entorno expuestas por Vite a través de import.meta.env
 const BASE_URL = import.meta.env.VITE_OPENWEATHER_BASE_URL
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 
+// Petición genérica al API de OpenWeatherMap usando URLSearchParams para la query string
 async function fetchWeather(params) {
   const query = new URLSearchParams({
     appid: API_KEY,
@@ -13,6 +15,7 @@ async function fetchWeather(params) {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
+    // Errores HTTP comunes: 404 ciudad no encontrada, 401 API key inválida
     if (response.status === 404) {
       throw new Error('Ubicación no encontrada')
     }
@@ -36,6 +39,7 @@ export async function fetchWeatherByCity(city) {
 
 const GEO_URL = import.meta.env.VITE_OPENWEATHER_GEO_URL
 
+// Autocomplete de ciudades usando el Geocoding API de OpenWeatherMap
 export async function fetchCitySuggestions(query) {
   if (!query || query.trim().length < 2) return []
   const params = new URLSearchParams({

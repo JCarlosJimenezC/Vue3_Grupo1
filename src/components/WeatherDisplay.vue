@@ -80,12 +80,14 @@
 import { computed } from 'vue'
 import WeatherIcon from './WeatherIcon.vue'
 
+// defineProps: recibe datos reactivos desde el componente padre (App.vue)
 const props = defineProps({
   weather: { type: Object, required: true },
   iconName: { type: String, required: true },
   conditionES: { type: String, required: true },
 })
 
+// Computed que formatea timestamp UNIX a fecha local en español (Costa Rica)
 const formattedDate = computed(() => {
   const date = new Date(props.weather.dt * 1000)
   return date.toLocaleDateString('es-CR', {
