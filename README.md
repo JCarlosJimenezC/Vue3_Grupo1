@@ -179,11 +179,11 @@ src/
 
 ### Mobile
 
-**Historial de búsquedas — Mobile (#3 y #6)**
-![Historial de ciudades recientes en móvil](./screenshots/historialreciente-mobile.png)
+**Vista general — Mobile (#1, #2, #3)**
+![Buscador, historial reciente y datos del clima en móvil](./screenshots/vistageneral-mobile.png)
 
-**Vista general — Mobile**
-![Vista general de la app en móvil](./screenshots/vista-mobile-2.jpeg)
+**Detalles del clima — Mobile (#2)**
+![Humedad, viento, presión y visibilidad en móvil](./screenshots/vista-general-mobile2.jpeg)
 
 ---
 
