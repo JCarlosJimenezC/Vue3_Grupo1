@@ -109,3 +109,8 @@ freeCodeCamp. (2025, 13 de junio). *How Vue Composables Work – Explained with 
 
 The Net Ninja. (2020, 16 de diciembre). *Vue JS 3 Tutorial for Beginners #11 - The Composition API (part 2)* [Video]. YouTube. https://www.youtube.com/watch?v=0FwBjPeLqQ8
 *Complementa:* uso de `props`, `fetch` y composables dentro de la Composition API (cubre exactamente el patrón que usan `useWeather.js` y `CitySearch.vue`).
+
+
+Junior Programmer. (2025, 18 de septiembre). #3 Cómo crear una app del Clima usando la API de OpenWeatherMap [Video]. YouTube. https://www.youtube.com/watch?v=DWv7vHpULfc
+
+Per's Multimedia Design Tutorials. (2020, 5 de octubre). OpenWeatherMap - get the API token [Video]. YouTube. https://www.youtube.com/watch?v=SPfgbeJGnec

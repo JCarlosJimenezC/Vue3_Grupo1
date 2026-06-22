@@ -164,16 +164,26 @@ src/
 
 ## Capturas de Pantalla
 
+### Desktop
+
 **Buscador de ciudad (#1)**
 ![Campo de texto y botón para buscar una ciudad](./screenshots/app-buscar.png)
 
 **Historial de búsquedas (#3 y #6)**
 ![Historial de ciudades recientes en escritorio](./screenshots/historialreciente.png)
 
-![Historial de ciudades recientes en móvil](./screenshots/historialreciente-mobile.png)
-
 **Manejo de errores (#5)**
 ![Tarjeta de error cuando la API key es inválida](./screenshots/app-error.png)
+
+---
+
+### Mobile
+
+**Historial de búsquedas — Mobile (#3 y #6)**
+![Historial de ciudades recientes en móvil](./screenshots/historialreciente-mobile.png)
+
+**Vista general — Mobile**
+![Vista general de la app en móvil](./screenshots/vista-mobile-2.jpeg)
 
 ---
 
