@@ -80,9 +80,11 @@ function handleHistorySelect(payload) {
     />
 
     <main class="app-main">
-    <div class="app-content" :class="{ 'content--loading': isLoading }">
-    <CitySearch ref="citySearchRef" @search="handleCitySearch" />
-    <SearchHistory :history="history" @select="handleHistorySelect" />
+    <div class="app-content">
+    <template v-if="!isLoading && !error">
+      <CitySearch ref="citySearchRef" @search="handleCitySearch" />
+      <SearchHistory :history="history" @select="handleHistorySelect" />
+    </template>
 
       <!-- #5: Manejo de errores -->
       <WeatherError
@@ -127,11 +129,5 @@ function handleHistorySelect(payload) {
   justify-content: center;
   min-height: 100vh;
   padding: var(--space-lg);
-}
-
-.content--loading {
-  opacity: 0.4;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 </style>
